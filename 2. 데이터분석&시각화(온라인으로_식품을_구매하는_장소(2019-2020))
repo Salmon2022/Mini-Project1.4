@@ -1,0 +1,227 @@
+setwd("C:/workspace/R_basic/pjt1.4")
+
+data4<-read.csv("온라인으로_식품을_구매하는_장소(2019-2020).csv", header=TRUE)
+
+#1인가구 온라인 식품 구매장소 비율
+#2019년도
+v2019.1<-as.vector(as.matrix(data4[9,c(3:10)]))
+#2020년도
+v2020.1<-as.vector(as.matrix(data4[9,c(11:18)]))
+
+#소득별 온라인 식품 구매장소 비율
+#2019년도 200만원 미만
+v2019.2<-as.vector(as.matrix(data4[17, c(3:10)]))
+#2020년도 200만원 미만
+v2020.2<-as.vector(as.matrix(data4[17, c(11:18)]))
+
+#2019년도 200~300만원 미만
+v2019.3<-as.vector(as.matrix(data4[18, c(3:10)]))
+#2020년도 200~300만원 미만
+v2020.3<-as.vector(as.matrix(data4[18, c(11:18)]))
+
+#2019년도 300~400만원 미만
+v2019.4<-as.vector(as.matrix(data4[19, c(3:10)]))
+#2020년도 300~400만원 미만
+v2020.4<-as.vector(as.matrix(data4[19, c(11:18)]))
+
+#2019년도 400~500만원 미만만
+v2019.5<-as.vector(as.matrix(data4[20, c(3:10)]))
+#2020년도 400~500만원 미만만
+v2020.5<-as.vector(as.matrix(data4[20, c(11:18)]))
+
+#2019년도 500~600만원 미만만
+v2019.6<-as.vector(as.matrix(data4[21, c(3:10)]))
+#2020년도 500~600만원 미만만
+v2020.6<-as.vector(as.matrix(data4[21, c(11:18)]))
+
+#2019년도 600만원 이상
+v2019.7<-as.vector(as.matrix(data4[22, c(3:10)]))
+#2020년도 600만원 이상
+v2020.7<-as.vector(as.matrix(data4[22, c(11:18)]))
+
+#colname 확인
+names<-as.character(data4[1,c(3:length(data4))])
+
+#연도별 1인가구 온라인 식품 구매장소 비율 비교분석/시각화
+v2019.1<-as.numeric(v2019.1)
+v2020.1<-as.numeric(v2020.1)
+v2019.2<-as.numeric(v2019.2)
+v2020.2<-as.numeric(v2020.2)
+v2019.3<-as.numeric(v2019.3)
+v2020.3<-as.numeric(v2020.3)
+v2019.4<-as.numeric(v2019.4)
+v2020.4<-as.numeric(v2020.4)
+v2019.5<-as.numeric(v2019.5)
+v2020.5<-as.numeric(v2020.5)
+v2019.6<-as.numeric(v2019.6)
+v2020.6<-as.numeric(v2020.6)
+v2019.7<-as.numeric(v2019.7)
+v2020.7<-as.numeric(v2020.7)
+
+library(ggplot2)
+#install.packages("gridExtra")
+library(gridExtra)
+library(ggrepel)
+#piechart 시각화
+df1<-data.frame("place"=names[1:8],
+                "share"=v2019.1)
+
+p1<-ggplot(df1, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y", start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+  labs(title="2019년 1인가구 온라인 식품 구매장소 비율")
+
+
+df2<-data.frame("place"=names[1:8],
+                "share"=v2020.1)
+
+p2<-ggplot(df2, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y",start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+   labs(title="2020년 1인가구 온라인 식품 구매장소 비율")
+
+grid.arrange(p1,p2,ncol=2)
+
+#분석내용 : 온라인 종합 쇼핑몰, 온라인 식품전문몰에서 구매하는 비중이 코로나 이후 증가했다.
+#대형할인점 온라인 매장에서 구매하는 비중은 코로나이후 감소했다.
+#친환경 전문점 온라인 매장,카페 블로그 SNS등의 공동구매, 특정식품 온라인매장 등은 코로나전후 변화가 없다
+#특산물온라인매장의 구매 비중은 코로나 이후 증가했다.
+
+
+#연도별 소득별 온라인 식품 구매장소 비율 비교분석/시각화 
+#200만원 미만
+df3<-data.frame("place"=names[1:8],
+                "share"=v2019.2)
+
+p1<-ggplot(df3, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y", start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+   labs(title="2019년 소득이 200만원 미만인 경우 온라인 식품 구매장소 비율")
+
+
+df4<-data.frame("place"=names[1:8],
+                "share"=v2020.2)
+
+p2<-ggplot(df2, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y",start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+  labs(title="2020년 소득이 200만원 미만인 경우 온라인 식품 구매장소 비율")
+
+grid.arrange(p1,p2,ncol=2)
+
+#분석내용: 200만원미만의 소득범위에서는 온라인 종합 쇼핑몰, 온라인 식품전문몰에서 구매하는 비중이 코로나 이후 증가했다.
+#대형할인점 온라인 매장에서 구매하는 비중은 코로나이후 감소했다.
+#친환경 전문점 온라인 매장, 카페 블로그 SNS등의 공동구매에서 구매하는 비중은 코로나 이후 감소했다.
+#특산물 온라인 매장에서 구매하는 비중은 코로나 이후 증가했다.
+#특정식품 온라인매장에서 구매하는 비중은 코로나 이후 감소했다.
+
+#200~300만원 미만
+df5<-data.frame("place"=names[1:8],
+                "share"=v2019.3)
+
+p1<-ggplot(df5, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y", start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+   labs(title="2019년 소득이 200~300만원인 경우 온라인 식품 구매장소 비율")
+
+
+df6<-data.frame("place"=names[1:8],
+                "share"=v2020.3)
+
+p2<-ggplot(df6, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y",start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+   labs(title="2020년 소득이 200~300만원인 경우 온라인 식품 구매장소 비율")
+
+grid.arrange(p1,p2,ncol=2)
+
+#분석내용: 200~300만원 미만의 소득범위에서는 온라인 종합쇼핑몰,대형할인점 온라인매장, 특정식품온라인매장 구매비중이 코로나 이후 감소했다.
+#온라인 식품 전문몰, 특산물 온라인 매장 구매 비중은 증가했다.
+#친환경 전문점 온라인 매장, 카페 블로그SNS등의 공동구매, 코로나전후 변화가 없다.
+
+#300~400만원 미만
+df7<-data.frame("place"=names[1:8],
+                "share"=v2019.4)
+
+p1<-ggplot(df7, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y", start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+   labs(title="2019년 소득이 300~400만원인 경우 온라인 식품 구매장소 비율")
+
+
+df8<-data.frame("place"=names[1:8],
+                "share"=v2020.4)
+
+p2<-ggplot(df8, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y",start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+  labs(title="2020년 소득이 300~400만원인 경우 온라인 식품 구매장소 비율")
+
+grid.arrange(p1,p2,ncol=2)
+
+#분석내용: 300~400만원 미만의 소득범위에서는 온라인 종합쇼핑몰, 온라인 식품 전문몰, 특정식품 온라인매장, 카페 블로그 SNS등의 공동 구매 등에서 구매하는 비중이 코라나 이후 증가했다.
+#대형할인 온라인매장, 친환경 전문점 온라인 매장, 특산물 온라인 매장에서 구매하는 비중은 코로나 이후 증가했다.
+
+#400~500만원 미만
+df9<-data.frame("place"=names[1:8],
+                "share"=v2019.5)
+
+p1<-ggplot(df9, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y", start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+   labs(title="2019년 소득이 400~500만원인 경우 온라인 식품 구매장소 비율")
+
+
+df10<-data.frame("place"=names[1:8],
+                "share"=v2020.5)
+
+p2<-ggplot(df10, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y",start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+  labs(title="2020년 소득이 400~500만원인 경우 온라인 식품 구매장소 비율")
+
+grid.arrange(p1,p2,ncol=2)
+
+#분석내용: 400~500만원 미만의 소득범위에서는 온라인 종합쇼핑몰, 대형할인점 온라인 매장. 특산물 온라인 매장에서 구매하는 비중이 코로나이후 감소했다.
+#온라인 식품 전문몰, 친환경 전문점 온라인 매장에서 구매하는 비중은 코로나 이후 증가했다.
+#카페 블로그 SNS 등의 공동무개는 코로나 전후 변화가 없다.
+
+#500~600만원 미만
+df11<-data.frame("place"=names[1:8],
+                "share"=v2019.6)
+
+p1<-ggplot(df11, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y", start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+  labs(title="2019년 소득이 500~600만원인 경우 온라인 식품 구매장소 비율")
+
+
+df12<-data.frame("place"=names[1:8],
+                "share"=v2020.6)
+
+p2<-ggplot(df12, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y",start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+  labs(title="2020년 소득이 500~600만원인 경우 온라인 식품 구매장소 비율")
+
+grid.arrange(p1,p2,ncol=2)
+
+#분석내용: 500~600만원 미만의 소득범위에서는 온라인 종합 쇼핑몰, 온라인 식품 전문몰, 친환경 전문점 온라인 매장에서 구매하는 비중이 코로나 이후 증가했다.
+#대형할인점 온라인 매장, 친환경 전문점 온라인 매장, 카페 블로그SNS등의 공동구매, 특정식품 온라인 매장애서 구매하는 비중은 코로나 이후 감소했다
+
+#600만원 이상
+df13<-data.frame("place"=names[1:8],
+                "share"=v2019.7)
+
+p1<-ggplot(df13, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y", start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+  labs(title="2019년 소득이 600만원이상인 경우 온라인 식품 구매장소 비율")
+
+
+df14<-data.frame("place"=names[1:8],
+                "share"=v2020.7)
+
+p2<-ggplot(df14, aes(x="", y=share, fill=place))+geom_bar(width=1, stat="identity")+coord_polar("y",start=0)+
+  geom_text_repel(aes(label = paste0(share,"%")), position = position_stack(vjust = 0.5))+ 
+  labs(title="2020년 소득이 600만원이상인 경우 온라인 식품 구매장소 비율")
+
+grid.arrange(p1,p2,ncol=2)
+
+#분석내용: 600만원 이상의 소득범위에서는 온라인 종합 쇼핑몰, 온라인 식품 전문몰, 카페 블로그SNS등의 공동구매로 구매하는 비중이 코로나 이후 증가했다.
+#대형할인점 온라인 매장, 친환경 전문점 온라인 매장에서 구매하는 비중은 코로나 이후 감소했다.
+#특산물 온라인 매장은 코로나 전후 구매 비중의 변화가 없다.
+
+
+#종합 분석 및 분석 결과 활용:
+#소득이 200만원 미만인경우와 소득이 600만원이상인 경우를 비교해보면 코로나 이후 공통적으로 온라인 종합 쇼핑몰, 온라인 식품 전문몰에서 구매하는 비율이 증가했고,
+#대형할인점 온라인 매장은 비율이 감소했다.
+#1인가구의 경우 이와 유사한 경향을 보인다.
+#따라서 본 비교분석을 통해 상품추천을 진행한다면 온라인 종합쇼핑몰이나 온라인 식품 전문몰에 상품추천 서비스를 적용하면 적절할것으로 판단된다. 
