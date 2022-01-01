@@ -1,0 +1,81 @@
+setwd('C:/workspace/R_basic/pjt1.4')
+data6 <- read.csv('지출액_기준_온라인으로_많이_구입하는_가공식품_품목군(2019-2020).csv',header=T)
+
+income <- data6[c(1,31:36),-1]
+
+t_income <- t(income)
+df_income <- as.data.frame(t_income)
+
+library(data.table) 
+setnames(df_income, old = c('1','31','32','33','34','35','36'),
+         new = c('가공식품','200만원 미만','200~300만원 미만','300~400만원 미만','400~500만원 미만',
+                 '500~600만원 미만','600만원 이상'))
+
+df_income <- df_income[-1,]
+year <- rep(c(2019,2020),each=25)
+
+inc_y <- cbind(df_income,year)
+
+
+grocery <- rep(c("육류가공품","알가공품","조미수산가공품",
+             "건조수산가공품","과일가공품","김치류","절임류","드레싱/소스류","장류",
+             "유지류","유가공품","빵/떡","과자","초콜릿/코코아제품","간편식",
+             "면류","연식품","전분/분말류","당류","조미식품","커피류",
+             "다류","음료류","주류","건강기능식품"),12)
+
+income <- rep(c('200만원 미만','200~300만원 미만','300~400만원 미만','400~500만원 미만',
+                '500~600만원 미만','600만원 이상'), each=50)
+
+
+inc_1 <- inc_y[,2]
+inc_2 <- inc_y[,3]
+inc_3 <- inc_y[,4]
+inc_4 <- inc_y[,5]
+inc_5 <- inc_y[,6]
+inc_6 <- inc_y[,7]
+
+ratio <-as.numeric(c(inc_1,inc_2,inc_3,inc_4,inc_5,inc_6))
+year <- rep(rep(c(2019,2020), each=25),6)
+
+grocery_df <- data.frame(grocery,ratio,income,year)
+
+
+library(ggplot2)
+ggplot(grocery_df, aes(income,grocery)) + geom_point(shape=19)
+grocery_df$ratio<- as.integer(grocery_df$ratio)
+
+#round(grocery_df$ratio,digits=1)
+
+
+high_df <-  grocery_df[which(ratio>5),]
+high_df_2019 <- high_df[which(high_df$year==2019,arr.ind=TRUE),]
+high_df_2020 <- high_df[which(high_df$year==2020,arr.ind=TRUE),]
+
+
+#install.packages("ggrepel")
+library(ggrepel)
+#install.packages("gridExtra")
+library(gridExtra)
+
+##### plotting  
+
+
+a<-ggplot(high_df_2019,aes(income,ratio,label=grocery))+
+  geom_point(aes(color=grocery))+
+  geom_text_repel()+
+  xlab('소득')+ylab('비율')+
+  scale_x_discrete(limits=c('200만원 미만','200~300만원 미만','300~400만원 미만','400~500만원 미만',
+                            '500~600만원 미만','600만원 이상'))+
+  ggtitle('2019년 소득별 가공식품 지출액 비율')
+a <-  update_labels(a, list(colour='가공식품'))
+
+b<-ggplot(high_df_2020,aes(income,ratio,label=grocery))+
+  geom_point(aes(color=grocery))+
+  geom_text_repel()+
+  xlab('소득')+ylab('비율')+
+  scale_x_discrete(limits=c('200만원 미만','200~300만원 미만','300~400만원 미만','400~500만원 미만',
+                            '500~600만원 미만','600만원 이상'))+
+  ggtitle('2020년 소득별 가공식품 지출액 비율')
+b <-  update_labels(b, list(colour='가공식품'))
+
+grid.arrange(a,b, nrow=2,ncol=1)
